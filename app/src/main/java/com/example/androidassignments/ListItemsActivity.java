@@ -2,18 +2,32 @@ package com.example.androidassignments;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-
+import android.view.View;
+import android.widget.ImageButton;
 
 public class ListItemsActivity extends AppCompatActivity {
     protected static final String ACTIVITY_NAME = "ListItemsActivity";
+    private final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_items);
         Log.i(ACTIVITY_NAME, "In onCreate()");
+
+        final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ImageButton imageButton = findViewById(R.id.imageButton1);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                takePicture(takePictureIntent);
+            }
+        });
     }
 
     @Override
@@ -45,4 +59,26 @@ public class ListItemsActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(ACTIVITY_NAME, "In onDestroy()");
     }
+
+    private void takePicture(Intent takePictureIntent) {
+        try {
+            //if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                startActivityForResult(takePictureIntent, REQUEST_CODE);
+           // } else {
+           //     Log.e(ACTIVITY_NAME, "Failed to open camera.");
+            //}
+        } catch (ActivityNotFoundException e) {
+            Log.e(ACTIVITY_NAME, "Failed to open camera.");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageButton imageButton = findViewById(R.id.imageButton1);
+            imageButton.setImageBitmap(imageBitmap);
+        }
+     }
 }
