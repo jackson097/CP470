@@ -7,4 +7,8 @@
     <string name="login_placeholder">nombre de inicio de sesión</string>
     <string name="password_label">contraseña</string>
     <string name="switch_label">¿Qué hace esto?</string>
+    <string name="dialog_message">¿Quieres terminar la actividad?</string>
+    <string name="dialog_title">Finalizar actividad</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
 </resources>

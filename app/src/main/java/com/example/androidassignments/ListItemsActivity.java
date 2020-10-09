@@ -1,14 +1,17 @@
 package com.example.androidassignments;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -36,12 +39,36 @@ public class ListItemsActivity extends AppCompatActivity {
                 takePicture(takePictureIntent);
             }
         });
+
         // Set listener for switch button
         final Switch switch1 = findViewById(R.id.switch1);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showToastMessage(isChecked);
+            }
+        });
+
+        // Set listener for checkbox
+        final CheckBox checkbox = findViewById(R.id.checkBox);
+        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListItemsActivity.this);
+                builder.setMessage(R.string.dialog_message)
+                .setTitle(R.string.dialog_title)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                Log.i(ACTIVITY_NAME, "Clicked cancel on dialog box");
+                            }
+                        })
+                        .show();
             }
         });
     }
