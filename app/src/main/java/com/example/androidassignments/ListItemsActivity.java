@@ -9,11 +9,18 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 public class ListItemsActivity extends AppCompatActivity {
     protected static final String ACTIVITY_NAME = "ListItemsActivity";
     private final int REQUEST_CODE = 1;
+    private final CharSequence switchOnText = "Switch is On";
+    private final CharSequence switchOffText = "Switch is Off";
+    private final int switchOnDuration = Toast.LENGTH_SHORT;
+    private final int switchOffDuration = Toast.LENGTH_LONG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +28,20 @@ public class ListItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_items);
         Log.i(ACTIVITY_NAME, "In onCreate()");
 
+        // Set listener for camera button
         final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         ImageButton imageButton = findViewById(R.id.imageButton1);
         imageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 takePicture(takePictureIntent);
+            }
+        });
+        // Set listener for switch button
+        final Switch switch1 = findViewById(R.id.switch1);
+        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                showToastMessage(isChecked);
             }
         });
     }
@@ -74,11 +90,22 @@ public class ListItemsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ImageButton imageButton = findViewById(R.id.imageButton1);
             imageButton.setImageBitmap(imageBitmap);
         }
-     }
+    }
+
+    private void showToastMessage(boolean isChecked) {
+        Toast toast;
+        if (isChecked) {
+            toast = Toast.makeText(this, switchOnText, switchOnDuration);
+        } else {
+            toast = Toast.makeText(this, switchOffText, switchOffDuration);
+        }
+        toast.show();
+    }
 }
