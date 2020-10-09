@@ -3,6 +3,7 @@
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\'m a button</string>
     <string name="login_label">login</string>
+    <string name="login_button_text">Login</string>
     <string name="login_placeholder">login name</string>
     <string name="password_label">password</string>
     <string name="switch_label">What does this do?</string>
